@@ -213,5 +213,5 @@ def train():
 
 if __name__ == "__main__":
     #train()
-    model = tf.keras.models.load_model("output/model_weight")
+    #model = tf.keras.models.load_model("output/model_weight")
     test(model)
