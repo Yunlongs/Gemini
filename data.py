@@ -113,12 +113,16 @@ def generate_pairs(type):
     length = len(funcname_list)
     for funcname in func_dict.keys():
         func_list = func_dict[funcname]
+        if len(func_list) <2 :
+            continue
         for i,g in enumerate(func_list):
             g_adjmat = zero_padded_adjmat(g,max_nodes)
             g_featmat = feature_vector(g,max_nodes)
             for j in range(2):
                 if j==0:
                     g1_index = np.random.randint(low=0,high=len(func_list))
+                    while g1_index == i:
+                        g1_index = np.random.randint(low=0, high=len(func_list))
                     g1 = func_list[g1_index]
                     g1_adjmat = zero_padded_adjmat(g1,max_nodes)
                     g1_featmat = feature_vector(g1,max_nodes)
