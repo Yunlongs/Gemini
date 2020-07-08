@@ -23,7 +23,7 @@ class embedding_layer(layers.Layer):
         curr_embedding = tf.einsum('ik,akj->aij',self.theta,input)
         curr_embedding = tf.nn.relu(curr_embedding)
         curr_embedding = tf.einsum('ik,akj->aij',self.theta1,curr_embedding)
-        curr_embedding = tf.nn.relu(curr_embedding)
+        #curr_embedding = tf.nn.relu(curr_embedding)
         return curr_embedding
 
     def compute_output_shape(self, input_shape):
@@ -106,6 +106,7 @@ def valid(model):
         epoch_accuracy_avg_valid.update_state(y, sim)
         sim = (sim + 1) / 2
         epoch_auc_avg.update_state(y,sim)
+
         if step % (valid_step_pre_epoch//100) == 0:
             print("valid step {:03d}: Loss: {:.3f}, Accuracy: {:.3%}, AUC: {:.3f}".format(step, epoch_loss_avg_valid.result(),
                                                                        epoch_accuracy_avg_valid.result(),epoch_auc_avg.result()))
@@ -212,6 +213,6 @@ def train():
     plt.show()
 
 if __name__ == "__main__":
-    #train()
-    model = tf.keras.models.load_model("output/model_weight")
-    test(model)
+    train()
+    #model = tf.keras.models.load_model("output/model_weight")
+    #test(model)
