@@ -17,11 +17,6 @@ class StrToBytes:
     def readline(self, size=-1):
         return self.fileobj.readline(size).encode()
 
-version = ["openssl-101a","openssl-101f"]
-arch = ["arm","x86","mips"]
-compiler = ["gcc","clang"]
-optimizer = ["O0","O1","O2","O3"]
-dir_name  = "../dataset/extracted-acfg/"
 
 
 def read_cfg():
@@ -38,6 +33,8 @@ def read_cfg():
                         picklefile = pickle.load(StrToBytes(f))
                     count += len(picklefile.raw_graph_list)
                     for func in picklefile.raw_graph_list:
+                        if len(func.g) < min_nodes_threshold:
+                            continue
                         if all_function_dict.get(func.funcname) == None:
                             all_function_dict[func.funcname] = []
                         all_function_dict[func.funcname].append(func.g)
