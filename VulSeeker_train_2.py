@@ -69,7 +69,7 @@ def compute_graph_embedding(cfg_adjmat,dfg_adjmat,feature_mat,W1,W2,cfg_embed_la
     '''
     feature_mat = tf.einsum('aij->aji',feature_mat) #shape = (batch,feature_size,max_nodes)
 
-    init_embedding = tf.zeros(shape=(cfg_adjmat.shape[1],embedding_size))
+    init_embedding = tf.zeros(shape=(max_nodes,embedding_size))
     cfg_prev_embedding = tf.einsum('aik,kj->aij', cfg_adjmat, init_embedding)  # shape = (batch,nodes,embedding_size)
     cfg_prev_embedding = tf.einsum('aij->aji', cfg_prev_embedding)  # shape = (batch,embedding_size,nodes)
     dfg_prev_embedding = tf.einsum('aik,kj->aij',dfg_adjmat,init_embedding) # shape = (batch,nodes,embedding_size)
