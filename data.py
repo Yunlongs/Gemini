@@ -31,13 +31,13 @@ def read_cfg():
                     filepath = dir_name+filename+".cfg"
                     with open(filepath,"r") as f:
                         picklefile = pickle.load(StrToBytes(f))
-                    count += len(picklefile.raw_graph_list)
                     for func in picklefile.raw_graph_list:
                         if len(func.g) < min_nodes_threshold:
                             continue
                         if all_function_dict.get(func.funcname) == None:
                             all_function_dict[func.funcname] = []
                         all_function_dict[func.funcname].append(func.g)
+                        count +=1
         counts.append(count)
     print("for three arch:",counts)
 

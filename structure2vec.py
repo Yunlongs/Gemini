@@ -212,7 +212,7 @@ def train():
     plt.legend()
     plt.show()
 
-if __name__ == "__main__":0
+if __name__ == "__main__":
     train()
     #model = tf.keras.models.load_model("output/model_weight")
     #test(model)
