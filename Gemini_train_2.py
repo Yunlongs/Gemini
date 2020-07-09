@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras import layers
-from data import generate_pairs,dataset_generation,zero_padded_adjmat,feature_vector
+from Gemini_data_1 import generate_pairs,dataset_generation,zero_padded_adjmat,feature_vector
 from config import *
 import matplotlib.pyplot as plt
 import numpy as np
@@ -213,6 +213,6 @@ def train():
     plt.show()
 
 if __name__ == "__main__":
-    train()
-    #model = tf.keras.models.load_model("output/model_weight")
-    #test(model)
+    #train()
+    model = tf.keras.models.load_model("output/model_weight")
+    test(model)

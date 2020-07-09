@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras import layers
-from data_vulseeker_1 import generate_pairs,dataset_generation,zero_padded_adjmat
+from VulSeeker_data_1 import generate_pairs,dataset_generation,zero_padded_adjmat
 from config import *
 import matplotlib.pyplot as plt
 import numpy as np
