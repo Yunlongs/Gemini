@@ -6,10 +6,16 @@ compiler = ["gcc"]
 optimizer = ["O0","O1","O2","O3"]
 dir_name  = "../dataset/extracted-acfg/"
 
+## VulSeeker
+vulseeker_rawdata_dir = "dataset/openssl/"
+vulseeker_dataset_dir = "dataset/vulseeker/"
+vulseeker_feature_size = 8
+vulseeker_model_save_path = "output/vulseeker/model_weight"
+
 ### some details about dataset generation
 max_nodes = 300
 min_nodes_threshold = 3
-Buffer_Size = 5000
+Buffer_Size = 1000
 mini_batch = 10
 
 
