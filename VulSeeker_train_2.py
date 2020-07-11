@@ -259,3 +259,5 @@ def train():
 
 if __name__ == "__main__":
     train()
+    #model = tf.keras.models.load_model(vulseeker_model_save_path)
+    #test(model)
