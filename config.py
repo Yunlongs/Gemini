@@ -10,10 +10,10 @@ dir_name  = "../dataset/extracted-acfg/"
 vulseeker_rawdata_dir = "dataset/openssl/"
 vulseeker_dataset_dir = "dataset/vulseeker/"
 vulseeker_feature_size = 8
-vulseeker_model_save_path = "output/vulseeker/model_weight"
+vulseeker_model_save_path = "output/vulseeker/vulseeker_model_weight"
 
 ### some details about dataset generation
-max_nodes = 200
+max_nodes = 500
 min_nodes_threshold = 3
 Buffer_Size = 1000
 mini_batch = 10
