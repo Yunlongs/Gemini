@@ -2,7 +2,7 @@
 ## choose what binary you want to generate the dataset
 version = ["openssl-101a","openssl-101f"]
 arch = ["arm","x86","mips"]
-compiler = ["gcc","clang"]
+compiler = ["gcc"]
 optimizer = ["O0","O1","O2","O3"]
 dir_name  = "../dataset/extracted-acfg/"
 
@@ -11,6 +11,13 @@ vulseeker_rawdata_dir = "dataset/openssl/"
 vulseeker_dataset_dir = "dataset/vulseeker/"
 vulseeker_feature_size = 8
 vulseeker_model_save_path = "output/vulseeker/vulseeker_model_weight"
+
+## Gemini
+Gemini_rawdata_dir = "../data/extracted-acfg"
+Gemini_dataset_dir = "dataset/"
+Gemini_feature_size = 9 # （max_constant_1,max_constant_2,num of strings,....）
+Gemini_model_save_path = "output/Gemini/model_weight"
+Gemini_figure_save_path = "output/Gemini/"
 
 ### some details about dataset generation
 max_nodes = 500
@@ -23,9 +30,9 @@ mini_batch = 10
 ### some params about training the network
 learning_rate  = 0.0001
 epochs  = 100
-step_per_epoch = 30000
-valid_step_pre_epoch = 3800
-test_step_pre_epoch = 38000
+step_per_epoch = 15000
+valid_step_pre_epoch = 1900
+test_step_pre_epoch = 1900
 T = 5
 embedding_size = 64
 embedding_depth = 2

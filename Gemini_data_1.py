@@ -106,7 +106,7 @@ def feature_vector(graph,size):
 
 def generate_pairs(type):
     assert type == b"train" or type == b"test" or type == b"valid","dataset type error!"
-    filepath = "dataset/"+type.decode()
+    filepath = Gemini_dataset_dir + type.decode()
     with open(filepath,"rb") as f:
         func_dict = pickle.load(f)
     funcname_list = list(func_dict.keys())

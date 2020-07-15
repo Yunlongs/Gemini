@@ -60,7 +60,7 @@ class MyModel(tf.keras.Model):
     def __init__(self):
         super(MyModel,self).__init__()
         self.embed_layer = embedding_layer()
-        self.W1 = tf.Variable(tf.random.uniform([embedding_size, 9], maxval=0.1, dtype=tf.float32))
+        self.W1 = tf.Variable(tf.random.uniform([embedding_size, Gemini_feature_size], maxval=0.1, dtype=tf.float32))
         self.W2 = tf.Variable(tf.random.uniform([embedding_size, embedding_size], maxval=0.2, dtype=tf.float32))
 
     def call(self, inputs, training=None, mask=None):
@@ -137,6 +137,7 @@ def test(model):
             if step == test_step_pre_epoch:
                 break
         step += 1
+    plt.figure(figsize=(5, 4))
     plt.plot(fpr,tpr)
     plt.xlabel("fpr")
     plt.ylabel("tpr")
@@ -184,7 +185,7 @@ def train():
         valid_accuracy.append(v_accuracy)
         valid_auc.append(v_auc)
         if v_auc>max_auc:
-            model.save(gemini_model_save_path, save_format='tf')
+            model.save(Gemini_model_save_path, save_format='tf')
             max_auc = v_auc
     test(model)
     plt.figure(figsize=(5,4))
@@ -195,7 +196,7 @@ def train():
     plt.xlabel("epochs")
     plt.ylabel("loss")
     plt.legend()
-    plt.savefig(gemini_fig_save_path+"loss.png")
+    plt.savefig(Gemini_fig_save_path+"loss.png")
 
     plt.figure(figsize=(5,4))
     plt.title("Accuracy curve")
@@ -204,7 +205,7 @@ def train():
     plt.xlabel("epochs")
     plt.ylabel("accuracy")
     plt.legend()
-    plt.savefig(gemini_fig_save_path + "accuracy.png")
+    plt.savefig(Gemini_fig_save_path + "accuracy.png")
 
     plt.figure(figsize=(5,4))
     plt.title("AUC curve")
@@ -213,7 +214,7 @@ def train():
     plt.xlabel("epochs")
     plt.ylabel("AUC")
     plt.legend()
-    plt.savefig(gemini_fig_save_path + "auc.png")
+    plt.savefig(Gemini_figure_save_path + "auc.png")
 
 
 if __name__ == "__main__":
