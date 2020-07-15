@@ -13,8 +13,8 @@ vulseeker_feature_size = 8
 vulseeker_model_save_path = "output/vulseeker/model_weight"
 
 ### some details about dataset generation
-max_nodes = 300
-min_nodes_threshold = 3
+max_nodes = 500
+min_nodes_threshold = 10
 Buffer_Size = 1000
 mini_batch = 10
 

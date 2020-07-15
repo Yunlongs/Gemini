@@ -8,7 +8,7 @@ def generate_features(type = "train"):
     :param type: 'train' or 'valid' or 'test'
     :return:
     '''
-    model = tf.keras.models.load_model("output/model_weight")
+    model = tf.keras.models.load_model("output/Gemini/Experiment_4/model_weight")
     with open("dataset/"+type,"rb") as f:
         func_dict = pickle.load(f)
     feature_list = []
@@ -50,7 +50,7 @@ def random_select_evaluate_dataset(k=1000):
     :param k:
     :return: selected funcnames and corresponding embeddings
     '''
-    model = tf.keras.models.load_model("output/model_weight")
+    model = tf.keras.models.load_model("output/Gemini/Experiment_4/model_weight")
     with open("dataset/test","rb") as f:
         test_dict = pickle.load(f)
     func_dict = {}
