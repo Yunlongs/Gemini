@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import roc_curve,auc
 
+from Genimi.config import Gemini_model_save_path
+
+
 class embedding_layer(layers.Layer):
     def __init__(self):
         super(embedding_layer,self).__init__()

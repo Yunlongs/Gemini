@@ -11,6 +11,7 @@ vulseeker_rawdata_dir = "dataset/openssl/"
 vulseeker_dataset_dir = "dataset/vulseeker/"
 vulseeker_feature_size = 8
 vulseeker_model_save_path = "output/vulseeker/vulseeker_model_weight"
+vulseeker_figure_save_path = "output/vulseeker/"
 
 ## Gemini
 Gemini_rawdata_dir = "../data/extracted-acfg"

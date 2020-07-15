@@ -58,7 +58,7 @@ def read_feature(funcname,binary_dir,nodes_num):
 
 def dataset_split(all_function_dict):
     all_func_num = len(all_function_dict)
-    train_func_num = int(all_func_num *0.8)
+    train_func_num = int(all_func_num * 0.8)
     test_func_num = int(all_func_num * 0.1)
 
     train_name = np.random.choice(list(all_function_dict.keys()),size =train_func_num,replace=False)
