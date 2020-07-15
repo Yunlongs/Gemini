@@ -22,7 +22,7 @@ Gemini_figure_save_path = "output/Gemini/"
 
 ### some details about dataset generation
 max_nodes = 500
-min_nodes_threshold = 3
+min_nodes_threshold = 0
 Buffer_Size = 1000
 mini_batch = 10
 
