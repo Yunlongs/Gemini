@@ -17,7 +17,7 @@ vulseeker_figure_save_path = "output/vulseeker/"
 Gemini_rawdata_dir = "../data/extracted-acfg"
 Gemini_dataset_dir = "dataset/"
 Gemini_feature_size = 9 # （max_constant_1,max_constant_2,num of strings,....）
-Gemini_model_save_path = "output/Gemini/model_weight"
+Gemini_model_save_path = "output/Gemini/Experiment_2/model_weight"
 Gemini_figure_save_path = "output/Gemini/"
 
 ### some details about dataset generation
@@ -32,8 +32,8 @@ mini_batch = 10
 learning_rate  = 0.0001
 epochs  = 100
 step_per_epoch = 15000
-valid_step_pre_epoch = 1900
-test_step_pre_epoch = 1900
+valid_step_pre_epoch = 3000
+test_step_pre_epoch = 3000
 T = 5
 embedding_size = 64
 embedding_depth = 2

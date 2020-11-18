@@ -135,7 +135,7 @@ def generate_pairs(type):
                     g2 = func_dict[funcname_list[index]][g2_index]
                     g2_adjmat = zero_padded_adjmat(g2,max_nodes)
                     g2_featmat = feature_vector(g2,max_nodes)
-                    pair = (g_adjmat,g_featmat,g2_adjmat,g2_featmat,0)
+                    pair = (g_adjmat,g_featmat,g2_adjmat,g2_featmat,-1)
                 yield pair
 
 def dataset_generation(type="train"):

@@ -139,7 +139,7 @@ def generate_pairs(type=b"train"):
                     func_2 = func_dict[funcname_list[index]][g2_index]
                     cfg_2,dfg_2,feat_matrix_2 = func_2
                     cfg_2,dfg_2,feat_matrix_2 = zero_padded_adjmat(cfg_2,max_nodes),zero_padded_adjmat(dfg_2,max_nodes),zero_padded_featmat(feat_matrix_2,max_nodes)
-                    pair = (cfg,dfg,feat_matrix,cfg_2,dfg_2,feat_matrix_2,0)
+                    pair = (cfg,dfg,feat_matrix,cfg_2,dfg_2,feat_matrix_2,-1)
                 yield pair
 
 
