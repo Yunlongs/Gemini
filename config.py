@@ -15,7 +15,7 @@ vulseeker_figure_save_path = "output/vulseeker/"
 
 ## Gemini
 Gemini_rawdata_dir = "../data/extracted-acfg"
-Gemini_dataset_dir = "dataset/"
+Gemini_dataset_dir = "dataset/Gemini/"
 Gemini_feature_size = 9 # （max_constant_1,max_constant_2,num of strings,....）
 Gemini_model_save_path = "output/Gemini/Experiment_2/model_weight"
 Gemini_figure_save_path = "output/Gemini/"

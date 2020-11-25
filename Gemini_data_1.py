@@ -54,7 +54,7 @@ def dataset_split(all_function_dict):
         train_func[func] = all_function_dict[func]
         all_function_dict.pop(func)
 
-    with open("dataset/train","wb") as f:
+    with open("dataset/Gemini/train","wb") as f:
         pickle.dump(train_func,f)
 
     test_func  = {}
@@ -62,12 +62,12 @@ def dataset_split(all_function_dict):
     for func in test_name:
         test_func[func] = all_function_dict[func]
         all_function_dict.pop(func)
-    with open("dataset/test","wb") as f:
+    with open("dataset/Gemini/test","wb") as f:
         pickle.dump(test_func,f)
 
     valid_func = all_function_dict
     valid_num = len(all_function_dict)
-    with open("dataset/valid","wb") as f:
+    with open("dataset/Gemini/valid","wb") as f:
         pickle.dump(valid_func,f)
 
     print("train dataset's num =%s ,valid dataset's num=%s , test dataset's num =%s"%(train_func_num,valid_num,test_func_num))

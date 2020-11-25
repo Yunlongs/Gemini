@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import roc_curve,auc
 
-from Genimi.config import Gemini_model_save_path
+from Gemini.config import Gemini_model_save_path
 
 
 class embedding_layer(layers.Layer):
@@ -151,7 +151,7 @@ def test(model):
 def train():
     optimizer = tf.optimizers.Adam(learning_rate)
     model = MyModel()
-    model.build([(None,max_nodes,max_nodes),(None,max_nodes,9),(None,max_nodes,max_nodes),(None,max_nodes,9)])
+    model.build([(None,max_nodes,max_nodes),(None,max_nodes,Gemini_feature_size),(None,max_nodes,max_nodes),(None,max_nodes,Gemini_feature_size)])
     model.summary()
     max_auc = 0
     train_loss =[]
@@ -221,7 +221,7 @@ def train():
 
 
 if __name__ == "__main__":
-    #train()
-     model = tf.keras.models.load_model(Gemini_model_save_path)
-    test(model)
+    train()
+    #model = tf.keras.models.load_model(Gemini_model_save_path)
+    #test(model)
 
