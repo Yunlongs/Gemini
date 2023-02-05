@@ -1,12 +1,12 @@
 import tensorflow as tf
 from tensorflow.keras import layers
 from Gemini_data_1 import generate_pairs,dataset_generation,zero_padded_adjmat,feature_vector
-from config import *
+import config
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import roc_curve,auc
 
-from Gemini.config import Gemini_model_save_path
+#from Gemini.config import Gemini_model_save_path
 
 
 class embedding_layer(layers.Layer):
@@ -14,8 +14,8 @@ class embedding_layer(layers.Layer):
         super(embedding_layer,self).__init__()
 
     def build(self, input_shape):
-        self.theta = self.add_weight(name="layer0",shape=tf.TensorShape([embedding_size,embedding_size]))
-        self.theta1 = self.add_weight(name="layer1",shape=tf.TensorShape([embedding_size,embedding_size]))
+        self.theta = self.add_weight(name="layer0",shape=tf.TensorShape([config.embedding_size, config.embedding_size]))
+        self.theta1 = self.add_weight(name="layer1",shape=tf.TensorShape([config.embedding_size, config.embedding_size]))
         super(embedding_layer,self).build(input_shape)
 
     def call(self,input):
@@ -43,10 +43,10 @@ def compute_graph_embedding(adjmat,feature_mat,W1,W2,embed_layer):
     '''
     feature_mat = tf.einsum('aij->aji',feature_mat) #shape = (batch,9,max_nodes)
 
-    init_embedding = tf.zeros(shape=(adjmat.shape[1],embedding_size))
+    init_embedding = tf.zeros(shape=(adjmat.shape[1],config.embedding_size))
     prev_embedding = tf.einsum('aik,kj->aij', adjmat, init_embedding)  # shape = (batch,nodes,embedding_size)
     prev_embedding = tf.einsum('aij->aji', prev_embedding)  # shape = (batch,embedding_size,nodes)
-    for iter in range(T):
+    for iter in range(config.T):
         neighbor_embedding = embed_layer(prev_embedding)  #shape = (batch,embedding_size,nodes)
         term = tf.einsum('ik,akj->aij', W1, feature_mat)  # shape=(batch,embedding_size,nodes)
         curr_embedding = tf.nn.tanh(term + neighbor_embedding)
@@ -63,8 +63,8 @@ class MyModel(tf.keras.Model):
     def __init__(self):
         super(MyModel,self).__init__()
         self.embed_layer = embedding_layer()
-        self.W1 = tf.Variable(tf.random.uniform([embedding_size, Gemini_feature_size], maxval=0.1, dtype=tf.float32))
-        self.W2 = tf.Variable(tf.random.uniform([embedding_size, embedding_size], maxval=0.2, dtype=tf.float32))
+        self.W1 = tf.Variable(tf.random.uniform([config.embedding_size, config.Gemini_feature_size], maxval=0.1, dtype=tf.float32))
+        self.W2 = tf.Variable(tf.random.uniform([config.embedding_size, config.embedding_size], maxval=0.2, dtype=tf.float32))
 
     def call(self, inputs, training=None, mask=None):
         g1_adjmat,g1_feature_mat,g2_adjmat,g2_feature_mat = inputs
@@ -110,10 +110,10 @@ def valid(model):
         sim = (sim + 1) / 2
         epoch_auc_avg.update_state(y,sim)
 
-        if step % (valid_step_pre_epoch//100) == 0:
+        if step % (config.valid_step_pre_epoch//100) == 0:
             print("valid step {:03d}: Loss: {:.3f}, Accuracy: {:.3%}, AUC: {:.3f}".format(step, epoch_loss_avg_valid.result(),
                                                                        epoch_accuracy_avg_valid.result(),epoch_auc_avg.result()))
-            if step == valid_step_pre_epoch:
+            if step == config.valid_step_pre_epoch:
                 break
         step += 1
     print("----------------------------")
@@ -135,9 +135,9 @@ def test(model):
         epoch_auc_ytrue = np.concatenate((epoch_auc_ytrue,y))
         fpr,tpr,thres = roc_curve(epoch_auc_ytrue,epoch_auc_sim,pos_label=1)
         auc_score = auc(fpr,tpr)
-        if step % (test_step_pre_epoch//100) == 0:
+        if step % (config.test_step_pre_epoch//100) == 0:
             print("test step {:03d}: Loss: {:.3f}, Accuracy: {:.3%}, AUC: {:.3f}".format(step, epoch_loss_avg_test.result(),epoch_accuracy_avg_test.result(),auc_score))
-            if step == test_step_pre_epoch:
+            if step == config.test_step_pre_epoch:
                 break
         step += 1
     plt.figure(figsize=(5, 4))
@@ -149,9 +149,9 @@ def test(model):
 
 
 def train():
-    optimizer = tf.optimizers.Adam(learning_rate)
+    optimizer = tf.optimizers.Adam(config.learning_rate)
     model = MyModel()
-    model.build([(None,max_nodes,max_nodes),(None,max_nodes,Gemini_feature_size),(None,max_nodes,max_nodes),(None,max_nodes,Gemini_feature_size)])
+    model.build([(None, config.max_nodes, config.max_nodes),(None, config.max_nodes, config.Gemini_feature_size),(None, config.max_nodes, config.max_nodes),(None, config.max_nodes, config.Gemini_feature_size)])
     model.summary()
     max_auc = 0
     train_loss =[]
@@ -160,7 +160,7 @@ def train():
     valid_auc = []
     train_accuracy = []
     valid_accuracy = []
-    for epoch in range(epochs):
+    for epoch in range(config.epochs):
         train_dataset = dataset_generation()
         epoch_loss_avg = tf.keras.metrics.Mean()
         epoch_accuracy_avg = tf.keras.metrics.BinaryAccuracy()
@@ -174,9 +174,9 @@ def train():
             epoch_accuracy_avg.update_state(y,sim)
             sim = (sim+1)/2
             epoch_auc_avg.update_state(y,sim)
-            if step%(step_per_epoch//100)==0:
+            if step%(config.step_per_epoch//100)==0:
                 print("step {:03d}: Loss: {:.3f}, Accuracy: {:.3%}, AUC: {:.3f}".format(step,epoch_loss_avg.result(),epoch_accuracy_avg.result(),epoch_auc_avg.result()))
-                if step==step_per_epoch:
+                if step== config.step_per_epoch:
                     break
             step +=1
         train_loss.append(epoch_loss_avg.result())
@@ -188,18 +188,18 @@ def train():
         valid_accuracy.append(v_accuracy)
         valid_auc.append(v_auc)
         if v_auc>max_auc:
-            model.save(Gemini_model_save_path, save_format='tf')
+            model.save(config.Gemini_model_save_path, save_format='tf')
             max_auc = v_auc
     test(model)
     plt.figure(figsize=(5,4))
     plt.title("Loss curve")
-    x = range(epochs)
+    x = range(config.epochs)
     plt.plot(x,train_loss,label="train_loss")
     plt.plot(x,valid_loss,label ="valid_loss")
     plt.xlabel("epochs")
     plt.ylabel("loss")
     plt.legend()
-    plt.savefig(Gemini_fig_save_path+"loss.png")
+    plt.savefig(config.Gemini_fig_save_path+"loss.png")
 
     plt.figure(figsize=(5,4))
     plt.title("Accuracy curve")
@@ -208,7 +208,7 @@ def train():
     plt.xlabel("epochs")
     plt.ylabel("accuracy")
     plt.legend()
-    plt.savefig(Gemini_fig_save_path + "accuracy.png")
+    plt.savefig(config.Gemini_fig_save_path + "accuracy.png")
 
     plt.figure(figsize=(5,4))
     plt.title("AUC curve")
@@ -217,11 +217,11 @@ def train():
     plt.xlabel("epochs")
     plt.ylabel("AUC")
     plt.legend()
-    plt.savefig(Gemini_figure_save_path + "auc.png")
+    plt.savefig(config.Gemini_figure_save_path + "auc.png")
 
 
 if __name__ == "__main__":
     train()
-    #model = tf.keras.models.load_model(Gemini_model_save_path)
+    #model = tf.keras.models.load_model(config.Gemini_model_save_path)
     #test(model)
 

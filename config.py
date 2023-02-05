@@ -1,8 +1,8 @@
 
 ## choose what binary you want to generate the dataset
-version = ["openssl-101a","openssl-101f"]
-arch = ["arm","x86","mips"]
-compiler = ["gcc"]
+version = ["openssl-101f"]
+arch = ["x86"]
+compiler = ["gcc", "clang"]
 optimizer = ["O0","O1","O2","O3"]
 dir_name  = "../dataset/extracted-acfg/"
 
@@ -30,8 +30,8 @@ mini_batch = 10
 
 ### some params about training the network
 learning_rate  = 0.0001
-epochs  = 100
-step_per_epoch = 15000
+epochs  = 30
+step_per_epoch = 5000
 valid_step_pre_epoch = 3000
 test_step_pre_epoch = 3000
 T = 5

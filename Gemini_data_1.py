@@ -4,7 +4,7 @@ import glob
 import pickle
 import numpy as np
 import networkx as nx
-from config import *
+import config
 
 
 class StrToBytes:
@@ -22,17 +22,17 @@ class StrToBytes:
 def read_cfg():
     all_function_dict = {}
     counts = []
-    for a in arch:
+    for a in config.arch:
         count = 0
-        for v in version:
-            for c in compiler:
-                for o in optimizer:
+        for v in config.version:
+            for c in config.compiler:
+                for o in config.optimizer:
                     filename = "_".join([v,a,c,o,"openssl"])
-                    filepath = dir_name+filename+".cfg"
+                    filepath = config.dir_name + filename+".cfg"
                     with open(filepath,"r") as f:
                         picklefile = pickle.load(StrToBytes(f))
                     for func in picklefile.raw_graph_list:
-                        if len(func.g) < min_nodes_threshold:
+                        if len(func.g) < config.min_nodes_threshold:
                             continue
                         if all_function_dict.get(func.funcname) == None:
                             all_function_dict[func.funcname] = []
@@ -86,11 +86,11 @@ def zero_padded_adjmat(graph, size):
 
 def feature_vector(graph,size):
     feature_mat = np.zeros((size,9))
-    for node in graph.nodes:
-        if node==size:
+    for _node in graph.node:
+        if _node==size:
             break
         feature = np.zeros((1,9))
-        vector  = graph.nodes[node]['v']
+        vector  = graph.node[_node]['v']
         num_const = vector[0]
         if len(num_const)==1:
             feature[0,0] = num_const[0]
@@ -98,7 +98,7 @@ def feature_vector(graph,size):
             feature[0,0:2] = np.sort(num_const)[::-1][:2]
         feature[0,2] =  len(vector[1])
         feature[0,3:] = vector[2:]
-        feature_mat[node,:] = feature
+        feature_mat[_node,:] = feature
     return feature_mat
 
 
@@ -106,7 +106,7 @@ def feature_vector(graph,size):
 
 def generate_pairs(type):
     assert type == b"train" or type == b"test" or type == b"valid","dataset type error!"
-    filepath = Gemini_dataset_dir + type.decode()
+    filepath = config.Gemini_dataset_dir + type.decode()
     with open(filepath,"rb") as f:
         func_dict = pickle.load(f)
     funcname_list = list(func_dict.keys())
@@ -116,16 +116,16 @@ def generate_pairs(type):
         if len(func_list) <2 :
             continue
         for i,g in enumerate(func_list):
-            g_adjmat = zero_padded_adjmat(g,max_nodes)
-            g_featmat = feature_vector(g,max_nodes)
+            g_adjmat = zero_padded_adjmat(g, config.max_nodes)
+            g_featmat = feature_vector(g, config.max_nodes)
             for j in range(2):
                 if j==0:
                     g1_index = np.random.randint(low=0,high=len(func_list))
                     while g1_index == i:
                         g1_index = np.random.randint(low=0, high=len(func_list))
                     g1 = func_list[g1_index]
-                    g1_adjmat = zero_padded_adjmat(g1,max_nodes)
-                    g1_featmat = feature_vector(g1,max_nodes)
+                    g1_adjmat = zero_padded_adjmat(g1, config.max_nodes)
+                    g1_featmat = feature_vector(g1, config.max_nodes)
                     pair = (g_adjmat,g_featmat,g1_adjmat,g1_featmat,1)
                 else:
                     index = np.random.randint(low=0,high = length)
@@ -133,16 +133,16 @@ def generate_pairs(type):
                         index = np.random.randint(low=0, high=length)
                     g2_index = np.random.randint(low=0,high = len(func_dict[funcname_list[index]]))
                     g2 = func_dict[funcname_list[index]][g2_index]
-                    g2_adjmat = zero_padded_adjmat(g2,max_nodes)
-                    g2_featmat = feature_vector(g2,max_nodes)
+                    g2_adjmat = zero_padded_adjmat(g2, config.max_nodes)
+                    g2_featmat = feature_vector(g2, config.max_nodes)
                     pair = (g_adjmat,g_featmat,g2_adjmat,g2_featmat,-1)
                 yield pair
 
 def dataset_generation(type="train"):
     data = tf.data.Dataset.from_generator(generate_pairs,output_types=(tf.float32,tf.float32,tf.float32,tf.float32,tf.float32),args=[type])
     data = data.repeat()
-    data = data.shuffle(buffer_size=Buffer_Size)
-    data = data.batch(batch_size=mini_batch)
+    data = data.shuffle(buffer_size=config.Buffer_Size)
+    data = data.batch(batch_size=config.mini_batch)
     data = data.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
     return data
 
