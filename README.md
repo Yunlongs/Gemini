@@ -1,8 +1,11 @@
 # Genimi
- A re-implementation of [Neural Network-based Graph Embedding for Cross-Platform Binary Code Similarity Detection]() and [VulSeeker: A Semantic Learning Based Vulnerability Seeker for
-Cross-Platform Binary]().
+ A re-implementation of [Neural Network-based Graph Embedding for Cross-Platform Binary Code Similarity Detection](https://dl.acm.org/doi/10.1145/3133956.3134018) and [VulSeeker: A Semantic Learning Based Vulnerability Seeker for
+Cross-Platform Binary](https://github.com/buptsseGJ/VulSeeker).
 
 The code is easy to read and use.
+
+**Note:**
+- This reposity is an unofficial implementation.
 ## Environment
 ```buildoutcfg
 tensorflow==2.2 
