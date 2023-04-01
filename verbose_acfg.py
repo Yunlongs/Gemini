@@ -7,6 +7,6 @@ import csv
 import networkx as nx
 import numpy as np
 
-with open(Gemini_dataset_dir+"train","rb") as f:
+with open(Gemini_dataset_dir+"train", "rb") as f:
     picklefile = pickle.load(f)
-print(1)
+print(picklefile[0])

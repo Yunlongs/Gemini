@@ -126,3 +126,6 @@ output/
 dataset/
 *.pb
 .idea/
+/data/extracted-acfg
+/data/Gemini/*
+/data/extracted-acfg.zip
